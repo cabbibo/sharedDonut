@@ -1,0 +1,193 @@
+﻿#pragma kernel CSMain
+ 
+ #define threadX 8
+ #define threadY 8
+ #define threadZ 8
+
+ #define strideX 8
+ #define strideY 8
+ #define strideZ 8
+
+ #define gridX (threadX * strideX)
+ #define gridY (threadY * strideY)
+ #define gridZ (threadZ * strideZ)
+
+ 
+float _Time;
+float _Delta;
+
+int _NumDisformers;
+float  _Drawing;
+int _RibbonWidth;
+int _RibbonLength;
+int _NumberHands;
+
+
+float radius = .4;
+
+#include "Chunks/VertStruct.cginc"
+#include "Chunks/PosStruct.cginc"
+#include "Chunks/HandStruct.cginc"
+
+
+#include "Chunks/springForce.cginc"
+#include "Chunks/handForce.cginc"
+
+
+RWStructuredBuffer<Vert> vertBuffer;
+RWStructuredBuffer<Pos> ogBuffer;
+RWStructuredBuffer<float3> disformBuffer;
+RWStructuredBuffer<float4x4> transBuffer;
+RWStructuredBuffer<Hand> handBuffer;
+
+Texture2D<float4> _Audio;
+
+
+struct Lookup{
+              uint main;
+              uint left;
+              uint right;
+              uint up;
+              uint down;
+              uint oppo;
+              uint row;
+              uint col;
+              uint ribbon;
+            };
+
+
+uint convertToID( uint row , uint col  ){
+
+  uint id;
+
+  if( col >= _RibbonWidth ){ col -= _RibbonWidth; }
+  if( col < 0 ){ col = _RibbonWidth-1; }
+
+  if( row >= _RibbonLength ){ row -= _RibbonLength; }
+  if( row < 0 ){ row = _RibbonLength-1; }
+  
+
+  id = row * _RibbonWidth + col;
+
+  return id;
+
+}
+
+Lookup getIDs( uint id ){
+
+
+
+  uint col = id % _RibbonWidth;
+  uint row = floor((float(id)) / _RibbonWidth);
+
+
+
+  Lookup l;
+
+  l.main  = convertToID( row   , col    );
+  l.left  = convertToID( row   , col-1  );
+  l.right = convertToID( row   , col+1  );
+  l.up    = convertToID( row+1 , col    );
+  l.down  = convertToID( row-1 , col    );
+  l.oppo  = convertToID( row   , col + _RibbonWidth / 2  );
+  l.row = row;
+  l.col = col;
+
+
+  return l;
+
+}
+
+
+
+
+[numthreads(threadX,threadY,threadZ)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+  
+  int total = gridX * gridY * gridZ;
+  
+  int pID = id.x + id.y * gridX + id.z * gridX * gridY;
+
+
+  
+  int bID = int(floor( pID / _RibbonWidth) * _RibbonWidth);
+  int oID = pID + _RibbonWidth / 2;
+  if( oID > bID + _RibbonWidth ){ oID - _RibbonWidth; }
+
+
+
+  Lookup l = getIDs( pID );
+
+  Vert vert = vertBuffer[l.main];
+  Pos og = ogBuffer[l.main];
+
+  Vert oppo = vertBuffer[l.oppo];
+
+  vert.debug = float3( 1. , 1. , 1. );
+
+
+
+  float springDistance = 2 * 3.14159 * radius / 8;
+
+  float3 force = float3( 0 , 0 , 0 );
+  float4 audio = _Audio[float2(abs(sin(vert.uv.y * 20.)) * 256.,0)];
+
+  //force += audio.xyz* .001;
+
+  force +=  .1 * springForce( vert.pos , mul( transBuffer[0] , float4( og.pos , 1.) ).xyz  , 0. );
+  //force +=  springForce( vert.pos , oppo.pos   , 0. );
+  //force += float3( 0. , 1. , 0.) * length( audio );
+
+  for( int i = 0; i < _NumberHands; i++ ){
+    Hand  h = handBuffer[i];
+    force += h.triggerVal  * .02 * handForce( vert.pos , h.pos , 1.0 );
+
+  }
+
+  for( int i = 0; i < _NumDisformers; i++ ){
+
+    float3 pos = disformBuffer[i];
+    float3 dif = (vert.pos - pos );
+
+    //float audio = audioBuffer[ i ];
+
+    float audio = length( _Audio[ float2((float(i) / _NumDisformers) * 32,0)] );
+    if( length( dif ) < audio * .5 ){
+      force += audio * normalize( dif ) * .003;
+    }
+
+
+
+
+  }
+
+
+  float handRadius = .3;
+
+
+  vert.vel += force * .05;
+  vert.vel *= .9;
+  //vert.vel += vert.vel * length(audio) * 1.;
+
+  vert.pos += vert.vel ;
+
+  vert.nor = normalize( oppo.pos - vert.pos );
+
+  Pos p;
+  p.pos = vert.pos * .99;
+ // if( _TriggerR2 == true || _TriggerL2 == true  ){ ogBuffer[pID]  = p; }
+
+
+  vert.debug = vert.nor * .5 + .5; //float3( 1. , 0. , 0 );
+
+  if( l.row == 0 ){
+    vert.debug = float3( 1. , 0 , 0 );
+  }
+
+  if( l.col == 0 ){
+    //vert.debug = float3( 0 , 1 , 0 );
+  }
+
+  vertBuffer[pID] = vert;
+
+}

@@ -1,0 +1,144 @@
+Base path: C:/Program Files/Unity/Editor/Data
+Cmd: getPlatforms
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 2 plat 4 at ShellShader.compute(87): 'convertToID': no matching 3 parameter function
+  error: 2 plat 4 at ShellShader.compute(87): undeclared identifier 'baseRibbonID'
+  api=4 insize=3583 outsize=29 ok=0
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 2 plat 4 at ShellShader.compute(87): 'convertToID': no matching 3 parameter function
+  error: 2 plat 4 at ShellShader.compute(87): undeclared identifier 'baseRibbonID'
+  api=4 insize=3583 outsize=29 ok=0
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(145): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3528 outsize=3677 ok=1
+Cmd: preprocess
+  insize=5288 outsize=338 ok=1
+Cmd: compileSnippet
+  error: 1 plat 4 at Chunks/getRibbonID.cginc(47): signed/unsigned mismatch, unsigned assumed\nCompiling Vertex program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getRibbonID.cginc(48): signed/unsigned mismatch, unsigned assumed\nCompiling Vertex program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getRibbonID.cginc(49): signed/unsigned mismatch, unsigned assumed\nCompiling Vertex program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getTubeNormalIDs.cginc(32): signed/unsigned mismatch, unsigned assumed\nCompiling Vertex program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getTubeNormalIDs.cginc(43): signed/unsigned mismatch, unsigned assumed\nCompiling Vertex program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getTubeNormalIDs.cginc(48): signed/unsigned mismatch, unsigned assumed\nCompiling Vertex program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  api=4 type=0 insize=5251 outsize=3061 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
+Cmd: compileSnippet
+  error: 1 plat 4 at Chunks/getRibbonID.cginc(47): signed/unsigned mismatch, unsigned assumed\nCompiling Fragment program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getRibbonID.cginc(48): signed/unsigned mismatch, unsigned assumed\nCompiling Fragment program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getRibbonID.cginc(49): signed/unsigned mismatch, unsigned assumed\nCompiling Fragment program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getTubeNormalIDs.cginc(32): signed/unsigned mismatch, unsigned assumed\nCompiling Fragment program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getTubeNormalIDs.cginc(43): signed/unsigned mismatch, unsigned assumed\nCompiling Fragment program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  error: 1 plat 4 at Chunks/getTubeNormalIDs.cginc(48): signed/unsigned mismatch, unsigned assumed\nCompiling Fragment program
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED
+  api=4 type=1 insize=5251 outsize=373 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(145): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3565 outsize=3677 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3570 outsize=4197 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  error: 2 plat 4 at ShellShader.compute(174): undeclared identifier 'oppo'
+  api=4 insize=3545 outsize=29 ok=0
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  error: 2 plat 4 at ShellShader.compute(174): undeclared identifier 'oppo'
+  api=4 insize=3545 outsize=29 ok=0
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3573 outsize=4197 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3598 outsize=4353 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3725 outsize=4449 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3733 outsize=4477 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3732 outsize=4477 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3732 outsize=4477 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3735 outsize=4429 ok=1
+Cmd: compileCompute
+  error: 1 plat 4 at ShellShader.compute(63): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(66): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at ShellShader.compute(92): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(113): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(114): integer divides may be much slower, try using uints if possible.
+  error: 1 plat 4 at ShellShader.compute(147): 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
+  api=4 insize=3729 outsize=4401 ok=1
