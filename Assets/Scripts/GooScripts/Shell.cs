@@ -24,7 +24,7 @@ public class Shell : MonoBehaviour
     public const int strideY = 8 ;
     public const int strideZ = 8 ;
 
-    public const int numDisformers = 1;
+    public const int numDisformers = 10;
 
     public float tubeRadius = .6f;
     public float shellRadius = .8f;
@@ -55,7 +55,7 @@ public class Shell : MonoBehaviour
 
     */
 
-    private const int VERT_SIZE = 16;
+
 
 
     private int gridX { get { return threadX * strideX; } }
@@ -66,7 +66,7 @@ public class Shell : MonoBehaviour
 
 
 
-    private int totalRibbonLength { get { return (int)Mathf.Floor( (float)vertexCount / ribbonWidth ); } }
+    private int ribbonLength { get { return (int)Mathf.Floor( (float)vertexCount / ribbonWidth ); } }
 
     private int _kernel;
     private Material material;
@@ -81,6 +81,7 @@ public class Shell : MonoBehaviour
     private float[] handValues;
 
     private GameObject[] Disformers; 
+
 
 
 
@@ -111,12 +112,13 @@ public class Shell : MonoBehaviour
      
       Dispatch();
 
-      int numVertsTotal = ribbonWidth * 3 * 2 * (totalRibbonLength);
+      int numVertsTotal = ribbonWidth * 3 * 2 * (ribbonLength);
       
       material.SetPass(0);
       material.SetBuffer("buf_Points", _vertBuffer);
       material.SetBuffer("og_Points", _ogBuffer);
       material.SetInt("_RibbonWidth" , ribbonWidth);
+      material.SetInt("_RibbonLength" , ribbonLength);
       material.SetInt("_TotalVerts" ,vertexCount);
       material.SetTexture("_AudioMap", audioTexture);
       material.SetVector( "_HandL",handPosL.transform.position);      
@@ -124,6 +126,7 @@ public class Shell : MonoBehaviour
       material.SetTexture( "_NormalMap" , normalMap );
       material.SetTexture("_CubeMap" , cubeMap );   
 
+  
       Graphics.DrawProcedural(MeshTopology.Triangles, numVertsTotal);
 
 
@@ -166,6 +169,98 @@ public class Shell : MonoBehaviour
      return new Vector3( xV , yV , zV );
 
    }
+
+   /*
+
+  Vector3 cubicCurve( float t , Vector3  c0 , Vector3 c1 , Vector3 c2 , Vector3 c3 ){
+  
+    float s  = 1.0f - t; 
+
+    Vector3 v1 = c0 * ( s * s * s );
+    Vector3 v2 = 3.0f * c1 * ( s * s ) * t;
+    Vector3 v3 = 3.0f * c2 * s * ( t * t );
+    Vector3 v4 = c3 * ( t * t * t );
+
+    Vector3 value = v1 + v2 + v3 + v4;
+
+    return value;
+
+  }
+
+
+
+Vector3 cubicFromValue( float val , out Vector3 upPos , out Vector3 doPos ){
+
+  //float3 upPos;
+  //float3 doPos;
+
+
+  Vector3 p0 = new Vector3( 0. , 0. , 0. );
+  Vector3 v0 = new Vector3( 0. , 0. , 0. );
+  Vector3 p1 = new Vector3( 0. , 0. , 0. );
+  Vector3 v1 = new Vector3( 0. , 0. , 0. );
+
+  Vector3 p2 = new Vector3( 0. , 0. , 0. );
+
+
+
+  float base = val * (float(pointsLength)-1.);
+  float baseUp   = floor( base );
+  float baseDown = ceil( base );
+  float amount = base - baseUp;
+
+  if( baseUp == 0. ){
+
+      p0 = pointsBuffer[ int( baseUp )        ];
+      p1 = pointsBuffer[ int( baseDown )      ];
+      p2 = pointsBuffer[ int( baseDown + 1. ) ];
+
+
+      v1 = .5 * ( p2 - p0 );
+
+  }else if( baseDown == float(_PointsLength-1) ){
+
+      p0 = pointsBuffer[ int( baseUp )      ];
+      p1 = pointsBuffer[ int( baseDown )    ];
+      p2 = pointsBuffer[ int( baseUp - 1. ) ];
+
+      v0 = .5 * ( p1 - p2 );
+
+  }else{
+
+      p0 = pointsBuffer[ int( baseUp )   ];
+      p1 = pointsBuffer[ int( baseDown ) ];
+
+
+      Vector3 pMinus;
+
+      pMinus = pointsBuffer[ int( baseUp - 1. )   ];
+      p2 =     pointsBuffer[ int( baseDown + 1. ) ];
+
+      v1 = .5 * ( p2 - p0 );
+      v0 = .5 * ( p1 - pMinus );
+
+  }
+
+
+  Vector3 c0 = p0;
+  Vector3 c1 = p0 + v0/3.;
+  Vector3 c2 = p1 - v1/3.;
+  Vector3 c3 = p1;
+
+
+
+
+  Vector3 pos = cubicCurve( amount , c0 , c1 , c2 , c3 );
+
+  upPos = cubicCurve( amount  + .01 , c0 , c1 , c2 , c3 );
+  doPos = cubicCurve( amount  - .01 , c0 , c1 , c2 , c3 );
+
+  return pos;
+
+
+}*/
+
 
     /*private Vector3 getVertPosition( float uvX , float uvY  ){
 
@@ -214,7 +309,7 @@ public class Shell : MonoBehaviour
         Disformers[i].GetComponent<MeshRenderer>().material.SetFloat("_audioID" , (float)i/numDisformers);
         Disformers[i].GetComponent<MeshRenderer>().material.SetFloat("_NumDisformers" , numDisformers);
         Disformers[i].GetComponent<setAudioSourceTexture>().sourceObj = audioObj;
-
+        Disformers[i].transform.parent = transform;
       }
 
 
@@ -226,13 +321,13 @@ public class Shell : MonoBehaviour
 
     private void createBuffers() {
 
-      _vertBuffer = new ComputeBuffer( vertexCount ,  VERT_SIZE * sizeof(float));
+      _vertBuffer = new ComputeBuffer( vertexCount ,  AssignStructs.VertC4StructSize * sizeof(float));
       _ogBuffer = new ComputeBuffer( vertexCount ,  3 * sizeof(float));
       _transBuffer = new ComputeBuffer( 32 ,  sizeof(float));
       _handBuffer = new ComputeBuffer( numberHands , AssignStructs.HandStructSize * sizeof(float));
       
 
-      float[] inValues = new float[ VERT_SIZE * vertexCount];
+      float[] inValues = new float[ AssignStructs.VertC4StructSize * vertexCount];
       float[] ogValues = new float[ 3         * vertexCount];
 
       int index = 0;
@@ -244,10 +339,13 @@ public class Shell : MonoBehaviour
           for (int x = 0; x < gridX; x++) {
 
             int id = x + y * gridX + z * gridX * gridY; 
-
-            float uvX = (float)(id % ribbonWidth ) / ribbonWidth;
-            float uvY = Mathf.Floor( (float)(id / ribbonWidth)) / totalRibbonLength;
             
+            float col = (float)(id % ribbonWidth );
+            float row = Mathf.Floor( ((float)id+.01f) / ribbonWidth);
+
+
+            float uvX = col / ribbonWidth;
+            float uvY = row / ribbonLength;
 
             Vector3 fVec = getVertPosition( uvX , uvY );
 
@@ -257,17 +355,25 @@ public class Shell : MonoBehaviour
             ogValues[indexOG++] = fVec.y;
             ogValues[indexOG++] = fVec.z;
 
-            AssignStructs.Vert i;
+            AssignStructs.VertC4 vert = new AssignStructs.VertC4();
 
-            i.pos = fVec * .99f;
-            i.vel = new Vector3( 0 , 0 , 0 );
-            i.nor = new Vector3( 0 , 1 , 0 );
-            i.uv  = new Vector2( uvX , uvY );
-            i.ribbonID = 0;
-            i.life = 0;
-            i.debug = new Vector3( 0 , 1 , 0 );
 
-            AssignStructs.AssignVertStruct( inValues , index , out index , i );
+            vert.pos = fVec * .99f;
+            vert.vel = new Vector3( 0 , 0 , 0 );
+            vert.nor = new Vector3( 0 , 1 , 0 );
+            vert.uv  = new Vector2( uvX , uvY );
+            vert.ribbonID = 0;
+            vert.life = 0;
+            vert.debug = new Vector3( 0 , 1 , 0 );
+            vert.row   = row; 
+            vert.col   = col; 
+
+            vert.lID = convertToID( col - 1 , row + 0 );
+            vert.rID = convertToID( col + 1 , row + 0 );
+            vert.uID = convertToID( col + 0 , row + 1 );
+            vert.dID = convertToID( col + 0 , row - 1 );
+
+            AssignStructs.AssignVertC4Struct( inValues , index , out index , vert );
 
           }
         }
@@ -277,6 +383,24 @@ public class Shell : MonoBehaviour
       _ogBuffer.SetData(ogValues);
 
     }
+
+    private float convertToID( float col , float row ){
+
+      float id;
+
+      if( col >= ribbonWidth ){ col -= ribbonWidth; }
+      if( col < 0 ){ col += ribbonWidth; }
+
+      if( row >= ribbonLength ){ row -= ribbonLength; }
+      if( row < 0 ){ row += ribbonLength; }
+
+
+      id = row * ribbonWidth + col;
+
+      return id;
+
+    }
+
  
     //For some reason I made this method to create a material from the attached shader.
     private void createMaterial(){
@@ -308,7 +432,9 @@ public class Shell : MonoBehaviour
       computeShader.SetFloat( "_DeltaTime"    , Time.deltaTime );
       computeShader.SetFloat( "_Time"         , Time.time      );
       computeShader.SetInt( "_RibbonWidth"  , ribbonWidth    );
-      computeShader.SetInt( "_RibbonLength"  , totalRibbonLength    );
+      computeShader.SetInt( "_RibbonLength"  , ribbonLength    );
+
+      Interface.SetOriginalComputeUniforms( computeShader );
 
       audioTexture = audioObj.GetComponent<audioSourceTexture>().AudioTexture;
 
@@ -321,6 +447,8 @@ public class Shell : MonoBehaviour
       computeShader.SetBuffer( _kernel , "handBuffer"   , _handBuffer     );
 
       computeShader.Dispatch(_kernel, strideX , strideY , strideZ );
+
+
 
     }
 

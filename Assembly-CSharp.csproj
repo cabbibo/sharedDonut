@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Interface.cs" />
      <Compile Include="Assets\OSPNative\scenes\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
      <Compile Include="Assets\OSPNative\scripts\ONSPAudioSource.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\audioListenerTexture.cs" />
@@ -54,6 +55,7 @@
      <Compile Include="Assets\Scripts\AudioScripts\setAudioSourceTexture.cs" />
      <Compile Include="Assets\Scripts\ComputeScripts\AssignStructs.cs" />
      <Compile Include="Assets\Scripts\GooScripts\Shell.cs" />
+     <Compile Include="Assets\Scripts\GooScripts\Tubes.cs" />
      <Compile Include="Assets\Scripts\PostRenderEvent.cs" />
      <Compile Include="Assets\Scripts\SetBodyMaterial.cs" />
      <Compile Include="Assets\Scripts\VRScripts\EventManager.cs" />
@@ -94,12 +96,15 @@
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\uvNormalMap.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_BlitFlip.shader" />
+     <None Include="Assets\Resources\Shaders\Compute\TubesShader.compute" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getGridDiscard.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getRibbonID.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertC4Struct.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_HiddenArea.shader" />
      <None Include="Assets\Resources\Shaders\Compute\ShellShader.compute" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\springForce.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
+     <None Include="Assets\Resources\Shaders\Compute\Chunks\VertC4Struct.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\sdfSubtract.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\noise.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\PosStruct.cginc" />

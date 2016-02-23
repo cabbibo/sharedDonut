@@ -3,12 +3,16 @@
   uint base = floor( id / 6 );
   uint tri  = id % 6;
   uint row = floor( base / _RibbonWidth );
-  uint col = base % _RibbonWidth;
+  uint col = (base) % _RibbonWidth;
+
+  uint rowU = (row + 1) % _RibbonLength;
+  uint colU = (col + 1) % _RibbonWidth;
 
   uint rDoID = row * _RibbonWidth;
-  uint rUpID = (row + 1) * _RibbonWidth;
+  uint rUpID = rowUp * _RibbonWidth;
   uint cDoID = col;
-  uint cUpID = col + 1;
+  uint cUpID = colU;
+
 
   uint fID = 0;
   uint tri1 = 0;

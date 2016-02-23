@@ -49,12 +49,15 @@
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\uvNormalMap.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_BlitFlip.shader" />
+     <None Include="Assets\Resources\Shaders\Compute\TubesShader.compute" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getGridDiscard.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getRibbonID.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertC4Struct.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_HiddenArea.shader" />
      <None Include="Assets\Resources\Shaders\Compute\ShellShader.compute" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\springForce.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
+     <None Include="Assets\Resources\Shaders\Compute\Chunks\VertC4Struct.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\sdfSubtract.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\noise.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\PosStruct.cginc" />
