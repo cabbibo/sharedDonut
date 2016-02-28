@@ -26,6 +26,24 @@
             StructuredBuffer<VertC4> buf_Points;
             StructuredBuffer<Pos> og_Points;
 
+            uniform float4x4 worldMat;
+            uniform float4x4 invWorldMat;
+            uniform float4x4 miniMat;
+
+
+            uniform float _NormalizedVelocityValue;
+            uniform float _NormalizedVertexValue;
+            uniform float _NormalizedOriginalValue;
+
+            uniform float _AudioValue;
+            uniform float _AudioSampleSize;
+            uniform float _ReflectionValue;
+            uniform float _NormalMapSize;
+            uniform float _NormalMapDepth;
+
+
+            uniform int _Mini;
+
             uniform float3 _HandL;
             uniform float3 _HandR;
             uniform int _RibbonWidth;
@@ -48,8 +66,8 @@
                 float2 uv       : TEXCOORD4;
             };
 
-            //#include "Chunks/getRibbonID.cginc"
-            #include "Chunks/getTubeNormalIDs.cginc"
+            #include "Chunks/getTorusIDs.cginc"
+            //#include "Chunks/getTubeNormalIDs.cginc"
             #include "Chunks/getGridDiscard.cginc"
             #include "Chunks/semLookup.cginc"
             #include "Chunks/uvNormalMap.cginc"
@@ -57,63 +75,7 @@
             //#include "Assets/Shaders/Chunks/Resources/uvNormalMap.cginc"
 
            
-            uint3 getID( uint id  ){
 
-  uint base = floor( id / 6 );
-  uint tri  = id % 6;
-  uint row = floor( base / _RibbonWidth );
-  uint col = (base) % _RibbonWidth;
-
-  uint rowU = (row + 1) % _RibbonLength;
-  uint colU = (col + 1) % _RibbonWidth;
-
-  uint rDoID = row * _RibbonWidth;
-  uint rUpID = rowU * _RibbonWidth;
-  uint cDoID = col;
-  uint cUpID = colU;
-
-
-  uint fID = 0;
-  uint tri1 = 0;
-  uint tri2 = 0;
-
-
-  if( tri == 0 ){
-    fID = rDoID + cDoID;
-    tri1 = rUpID + cDoID;
-    tri2 = rUpID + cUpID;
-  }else if( tri == 1 ){
-    fID = rUpID + cDoID;
-    tri1 = rUpID + cUpID;
-    tri2 = rDoID + cDoID;
-  }else if( tri == 2 ){
-    fID = rUpID + cUpID;
-    tri1 = rDoID + cDoID;
-    tri2 = rUpID + cDoID;
-  }else if( tri == 3 ){
-    fID = rDoID + cDoID;
-    tri1 = rUpID + cUpID;
-    tri2 = rDoID + cUpID;
-  }else if( tri == 4 ){
-    fID = rUpID + cUpID;
-    tri1 = rDoID + cUpID;
-    tri2 = rDoID + cDoID;
-  }else if( tri == 5 ){
-    fID = rDoID + cUpID;
-    tri1 = rDoID + cDoID;
-    tri2 = rUpID + cUpID;
-  }else{
-    fID = 0;
-  }
-
-
-    if( fID  >= _TotalVerts ){ fID  -= _TotalVerts; }
-    if( tri1 >= _TotalVerts ){ tri1 -= _TotalVerts; }
-    if( tri2 >= _TotalVerts ){ tri2 -= _TotalVerts; }
-    return uint3( fID , tri1 , tri2 );
-
-}
-            
 
             //Our vertex function simply fetches a point from the buffer corresponding to the vertex index
             //which we transform with the view-projection matrix before passing to the pixel program.
@@ -122,43 +84,37 @@
                 varyings o;
 
                 // from getRibbonID 
-                uint3 fID = getID( id );
-                VertC4 v = buf_Points[fID.x];
-                Pos og = og_Points[fID.x];
-                float3 tri1 = buf_Points[fID.y].pos;
-                float3 tri2 = buf_Points[fID.z].pos;
+                uint fID = getID( id );
+                VertC4 v = buf_Points[fID];
+                Pos og = og_Points[fID];
 
-                float3 nor = normalize(cross( normalize(v.pos - tri1) , normalize(v.pos - tri2)));
-
-                uint4 forNorm = getTubeNormalIDs( id );
-
-                float3 dif = og.pos - v.pos;
-
-
-                float3 l = buf_Points[forNorm.x].pos;
-                float3 r = buf_Points[forNorm.y].pos;
-                float3 u = buf_Points[forNorm.z].pos;
-                float3 d = buf_Points[forNorm.w].pos;
-
-                /*
-                
-                float3 l = buf_Points[v.lID].pos;
-                float3 r = buf_Points[v.rID].pos;
-                float3 u = buf_Points[v.uID].pos;
-                float3 d = buf_Points[v.dID].pos;
-                
-                */
-
-                nor = -normalize( cross( normalize(l - r) , normalize( u - d ) ));
+                float3 dif =  mul( worldMat , float4( og.pos , 1.) ).xyz - v.pos;
 
                 o.worldPos = v.pos;
 
+                if( _Mini == 1 ){
+
+                  //o.worldPos = mul( invWorldMat , float4( v.pos , 1.) ).xyz;
+                  o.worldPos = mul( miniMat , float4( o.worldPos , 1.) ).xyz;
+
+                }
+
                 o.pos = mul (UNITY_MATRIX_VP, float4(o.worldPos,1.0f));
 
-                o.debug = v.debug;//normalize( dif );// * nor;//o.worldPos - og.pos;
+
+
+
+
+                float3 fDif = normalize( dif ) * _NormalizedOriginalValue;
+                float3 fNor = v.nor * _NormalizedVertexValue;
+                float3 fVel = normalize( v.vel) * _NormalizedVelocityValue;
+
+                o.debug = normalize(fDif + fNor + fVel);// * nor;//o.worldPos - og.pos;
 
                 o.eye = _WorldSpaceCameraPos - o.worldPos;
                 o.uv = v.uv;
+
+               // o.debug = v.vel;
 
                 o.nor = v.nor; //nor;// * .5 + .5;//float3(float(fID)/32768., v.uv.x , v.uv.y);
                 return o;
@@ -174,7 +130,8 @@
                 difR = normalize( difR );
 
 
-                float3 fNorm = uvNormalMap( _NormalMap , i.pos ,  i.uv  * float2( 1. , .2), i.nor , 20.1 ,.2);
+                float3 fNorm = uvNormalMap( _NormalMap , i.pos ,  i.uv  * float2( 1. , .2), i.nor , _NormalMapSize ,_NormalMapDepth);
+                //fNorm = i.debug;
 
                 float3 reflL = reflect( difL , fNorm );
                 float matchL = max( 0. , -dot( reflL , normalize(i.eye) )); 
@@ -184,39 +141,33 @@
                 float3 col = (fNorm * .5 +.5) + (difL * .5 +.5) + (difR * .5 +.5);
 
 
-                float3 semCol = tex2D( _SEMMap , semLookup( i.eye , fNorm) );
                 float3 fRefl = reflect( -i.eye , fNorm );
-                float3 cubeCol = float3( 1.0 ,1.0 , 1.0 ) - texCUBE(_CubeMap,fRefl ).rgb;
+                float3 cubeCol = texCUBE(_CubeMap, normalize( fRefl ) ).rgb;
 
 
-                float3 aCol = tex2D( _AudioMap , float2( length( i.debug) * 4. , 0.)).xyz;
 
                 float fr = dot( fNorm , -i.eye );
-               
-                col = normalize( col );
+                float3 aCol = tex2D( _AudioMap , float2(fr * _AudioSampleSize , 0.)).xyz;
 
-                col = float3( matchL , matchL , matchL );
+                float3 fCol = i.debug * .5 + .5;
+                fCol = lerp( fCol , fCol * cubeCol , _ReflectionValue );
 
-                col  = pow( matchR , 11 ) * (reflR * .5 + .5 );
-                col += pow( matchL , 11 ) * (reflL * .5 + .5 );
-                //col += (fNorm * .5 + .5);
-                //col = (fNorm * .5 + .5);
+                fCol = lerp( fCol , 2 * aCol * fCol , _AudioValue ); //tex2D( _AudioMap , float2(i.uv.y, 0. ));
 
+                //fCol = aCol;
+                //fCol = fNorm * .5 + .5;
 
-                //float3 c = getGridDiscard( i.uv , cubeCol );
+                //fCol = i.debug * .5 + .5;
 
-                float skyboxVal = length( cubeCol ) / 1.;
+                //fCol = float3( fr , fr , fr );
 
-                float3 fCol = pow( cubeCol  , 1. ) * 1.;
-
-                fCol += aCol; //tex2D( _AudioMap , float2(i.uv.y, 0. ));
-
-                //fCol = i.nor + ;
-
-               fCol =  i.nor * .5 + .5;
-               //fCol *= aCol * 2.;
+               //fCol =  (normalize(i.nor + normalize(i.debug ))* .5 ) + .5;
+               //fCol = cubeCol;
+               //fCol = aCol;
+               //fCol = normalize( i.debug ) * .5 + .5;
                //fCol =  length( i.debug ) * length( i.debug ) * (i.nor * .5 + .5) * cubeCol ;
 
+               //fCol = i.debug * .5 + .5;
                 return float4( fCol , 1.);//.1 * float4(1,0.5f,0.0f,1.0) / ( i.dToPoint * i.dToPoint  * i.dToPoint );
             }
  

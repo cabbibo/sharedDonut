@@ -10,6 +10,8 @@ public class Shell : MonoBehaviour
     public GameObject[] Hands; 
     private int numberHands{ get { return Hands.Length; } }
 
+    public SlugInterface uniformInterface;
+
     private ComputeBuffer _vertBuffer;
     private ComputeBuffer _ogBuffer;
     private ComputeBuffer _transBuffer;
@@ -24,7 +26,7 @@ public class Shell : MonoBehaviour
     public const int strideY = 8 ;
     public const int strideZ = 8 ;
 
-    public const int numDisformers = 10;
+    public const int numDisformers = 20;
 
     public float tubeRadius = .6f;
     public float shellRadius = .8f;
@@ -38,7 +40,7 @@ public class Shell : MonoBehaviour
     public GameObject handPosL;
     public GameObject handPosR;
     public GameObject DisformerPrefab;
-    
+    public GameObject Mini;
 
     public Texture2D normalMap;
     public Cubemap cubeMap;
@@ -91,6 +93,8 @@ public class Shell : MonoBehaviour
 
       handValues = new float[numberHands * AssignStructs.HandStructSize];
 
+      uniformInterface = GetComponent<SlugInterface>();
+
       createDisformers();
       createBuffers();
       createMaterial();
@@ -115,6 +119,7 @@ public class Shell : MonoBehaviour
       int numVertsTotal = ribbonWidth * 3 * 2 * (ribbonLength);
       
       material.SetPass(0);
+
       material.SetBuffer("buf_Points", _vertBuffer);
       material.SetBuffer("og_Points", _ogBuffer);
       material.SetInt("_RibbonWidth" , ribbonWidth);
@@ -124,32 +129,44 @@ public class Shell : MonoBehaviour
       material.SetVector( "_HandL",handPosL.transform.position);      
       material.SetVector( "_HandR",handPosR.transform.position); 
       material.SetTexture( "_NormalMap" , normalMap );
-      material.SetTexture("_CubeMap" , cubeMap );   
+      material.SetTexture("_CubeMap" , cubeMap ); 
+      material.SetInt( "_Mini" , 0 );
+      material.SetMatrix("worldMat", transform.localToWorldMatrix);
+      material.SetMatrix("invWorldMat", transform.worldToLocalMatrix);
+      material.SetMatrix("miniMat", Mini.transform.localToWorldMatrix);
+
+      uniformInterface.SetRenderUniforms( material );
+
+      Graphics.DrawProcedural(MeshTopology.Triangles, numVertsTotal);
+
+      material.SetPass(0);
+
+      material.SetBuffer("buf_Points", _vertBuffer);
+      material.SetBuffer("og_Points", _ogBuffer);
+      material.SetInt("_RibbonWidth" , ribbonWidth);
+      material.SetInt("_RibbonLength" , ribbonLength);
+      material.SetInt("_TotalVerts" ,vertexCount);
+      material.SetTexture("_AudioMap", audioTexture);
+      material.SetVector( "_HandL",handPosL.transform.position);      
+      material.SetVector( "_HandR",handPosR.transform.position); 
+      material.SetTexture( "_NormalMap" , normalMap );
+      material.SetTexture("_CubeMap" , cubeMap ); 
+      material.SetInt( "_Mini" , 1 );
+      material.SetMatrix("worldMat", transform.localToWorldMatrix);
+      material.SetMatrix("invWorldMat", transform.worldToLocalMatrix);
+      material.SetMatrix("miniMat", Mini.transform.localToWorldMatrix);
+
+
+      uniformInterface.SetRenderUniforms( material );
 
   
       Graphics.DrawProcedural(MeshTopology.Triangles, numVertsTotal);
 
 
+
+
+
     }
-
-   /*private Vector3 getVertPosition( float uvX , float uvY  ){
-
-     float u = uvY * 2.0f * Mathf.PI;
-     float v = uvX * 2.0f * Mathf.PI;
-
-     float largeMovement = Mathf.Sin( uvY * 10.0f ) * .3f;
-     float smallMovement = Mathf.Sin( uvY * 100.0f )  * ( uvY * uvY * .03f);
-     float tubeRad = tubeRadius * Mathf.Pow( uvY - .01f , .3f)  * ( 1.0f + largeMovement + smallMovement ) ;
-     float slideRad = shellRadius / 2.0f + uvY;
-
-     float xV = (slideRad + tubeRad * Mathf.Cos(v)) * Mathf.Cos(u) - .5f;
-     float zV = (slideRad + tubeRad * Mathf.Cos(v)) * Mathf.Sin(u) + .5f;
-     float yV = (tubeRad) * Mathf.Sin(v) + tubeRad;//+ ( .2f * u );
-
-     //print( xV );
-     return new Vector3( xV , yV , zV );
-
-   }*/
 
     private Vector3 getVertPosition( float uvX , float uvY  ){
 
@@ -310,6 +327,8 @@ Vector3 cubicFromValue( float val , out Vector3 upPos , out Vector3 doPos ){
         Disformers[i].GetComponent<MeshRenderer>().material.SetFloat("_NumDisformers" , numDisformers);
         Disformers[i].GetComponent<setAudioSourceTexture>().sourceObj = audioObj;
         Disformers[i].transform.parent = transform;
+
+
       }
 
 
@@ -358,12 +377,12 @@ Vector3 cubicFromValue( float val , out Vector3 upPos , out Vector3 doPos ){
             AssignStructs.VertC4 vert = new AssignStructs.VertC4();
 
 
-            vert.pos = fVec * .99f;
+            vert.pos = fVec * .9f;
             vert.vel = new Vector3( 0 , 0 , 0 );
             vert.nor = new Vector3( 0 , 1 , 0 );
             vert.uv  = new Vector2( uvX , uvY );
             vert.ribbonID = 0;
-            vert.life = 0;
+            vert.life = -1;
             vert.debug = new Vector3( 0 , 1 , 0 );
             vert.row   = row; 
             vert.col   = col; 
@@ -434,7 +453,7 @@ Vector3 cubicFromValue( float val , out Vector3 upPos , out Vector3 doPos ){
       computeShader.SetInt( "_RibbonWidth"  , ribbonWidth    );
       computeShader.SetInt( "_RibbonLength"  , ribbonLength    );
 
-      Interface.SetOriginalComputeUniforms( computeShader );
+      uniformInterface.SetComputeUniforms( computeShader );
 
       audioTexture = audioObj.GetComponent<audioSourceTexture>().AudioTexture;
 

@@ -14,22 +14,21 @@
 
  
 //Shaping Factors;
-const float _LengthOfConnectionSprings      = 0.0001;
-const float _ConnectionSpringStrength       = .3;
-const float _MaxVel                         = 3.5;
-const float _MaxForce                       = 3.2;
-const float _ForceMultiplier                = 100.1;
+float _LengthOfConnectionSprings      ;//= 0.0001;
+float _ConnectionSpringStrength       ;//= .3;
+float _MaxVel                         ;//= 3.5;
+float _MaxForce                       ;//= 3.2;
+float _ForceMultiplier                ;//= 100.1;
 
-const float _Dampening                      = .98;
-const float _HandRepelRadius                = 1.0;
-const float _HandRepelStrength              = -.05;
+float _Dampening                      ;//= .98;
+float _HandRepelRadius                ;//= 1.0;
+float _HandRepelStrength              ;//= -.05;
 
-const float _ReturnSpringStrength           = 100.1;
+float _ReturnSpringStrength           ;//= 100.1;
 
-const float _DistanceToAudioHit             = 2.;
-const float _AudioHitMultiplier             = .003;
+float _DistanceToAudioHit             ;//= 2.;
+float _AudioHitMultiplier             ;//= .003;
 
-//#define _LengthOfConnectionSprings   0.0001
 //#define _ConnectionSpringStrength    .3
 //#define _MaxVel                      30.5
 //#define _MaxForce                    30.2
@@ -132,11 +131,23 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
   float3 u = vertBuffer[vert.uID].pos;
   float3 d = vertBuffer[vert.dID].pos;
 
-  force += _ConnectionSpringStrength * springForce( vert.pos , l , _LengthOfConnectionSprings );
-  force += _ConnectionSpringStrength * springForce( vert.pos , r , _LengthOfConnectionSprings );
-  force += _ConnectionSpringStrength * springForce( vert.pos , u , _LengthOfConnectionSprings );
-  force += _ConnectionSpringStrength * springForce( vert.pos , d , _LengthOfConnectionSprings );
+  float3 connectionForce = float3( 0. , 0. , 0. );
 
+  //float cs =_ConnectionSpringStrength;
+  //float ls =_LengthOfConnectionSprings;
+
+
+  float cs = .1;
+  float ls = .01;
+
+
+  connectionForce += cs * springForce( vert.pos , l , ls );
+  connectionForce += cs * springForce( vert.pos , r , ls );
+  connectionForce += cs * springForce( vert.pos , u , ls );
+  connectionForce += cs * springForce( vert.pos , d , ls );
+
+  force += connectionForce;
+  vert.debug = connectionForce;
   //Calculate normal from connections here instead of vert shader
   vert.nor = normalize( cross( (l - r) , (u-d) ));
 
@@ -158,18 +169,22 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
 
   //vert.pos = transformedOG;
 
-  vert.debug = float3( vert.row / _RibbonLength ,  vert.col / _RibbonWidth , 0. );
+ // vert.debug = float3( vert.row / _RibbonLength ,  vert.col / _RibbonWidth , 0. );
+//
+ // if( vert.row == 0 ){
+ //   vert.debug = float3( 1. , 0 , 0 );
+ // }
+//
+ // if( vert.col == 0 ){
+ //   //vert.debug = float3( 0 , 1 , 0 );
+ // }
+//
+ // vert.debug = normalize( vert.pos - vertBuffer[vert.lID].pos ) * .5 + .5;
 
-  if( vert.row == 0 ){
-    vert.debug = float3( 1. , 0 , 0 );
+  if( vert.life < 0 ){
+    vert.pos = transformedOG * .999;
+    vert.life = 1;
   }
-
-  if( vert.col == 0 ){
-    //vert.debug = float3( 0 , 1 , 0 );
-  }
-
-  vert.debug = normalize( vert.pos - vertBuffer[vert.lID].pos ) * .5 + .5;
-
   vertBuffer[pID] = vert;
 
 }

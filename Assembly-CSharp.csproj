@@ -45,9 +45,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Interface.cs" />
      <Compile Include="Assets\OSPNative\scenes\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
      <Compile Include="Assets\OSPNative\scripts\ONSPAudioSource.cs" />
+     <Compile Include="Assets\Scripts\AudioScripts\PlayOnTouch.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\audioListenerTexture.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\audioSourceTexture.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\micInput.cs" />
@@ -56,9 +56,14 @@
      <Compile Include="Assets\Scripts\ComputeScripts\AssignStructs.cs" />
      <Compile Include="Assets\Scripts\GooScripts\Shell.cs" />
      <Compile Include="Assets\Scripts\GooScripts\Tubes.cs" />
+     <Compile Include="Assets\Scripts\InterfaceScripts\Select3D.cs" />
+     <Compile Include="Assets\Scripts\InterfaceScripts\SetColorFromValue.cs" />
+     <Compile Include="Assets\Scripts\InterfaceScripts\Slider.cs" />
+     <Compile Include="Assets\Scripts\InterfaceScripts\SlugInterface.cs" />
      <Compile Include="Assets\Scripts\PostRenderEvent.cs" />
      <Compile Include="Assets\Scripts\SetBodyMaterial.cs" />
      <Compile Include="Assets\Scripts\VRScripts\EventManager.cs" />
+     <Compile Include="Assets\Scripts\VRScripts\GetCollisionBounds.cs" />
      <Compile Include="Assets\Scripts\VRScripts\MoveByController.cs" />
      <Compile Include="Assets\Scripts\VRScripts\MoveBySpringController.cs" />
      <Compile Include="Assets\Scripts\VRScripts\MoveParent.cs" />
@@ -112,9 +117,11 @@
      <None Include="Assets\Resources\Shaders\vertfrag\SubAudio.shader" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\HandStruct.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Blit.shader" />
+     <None Include="Assets\Resources\Shaders\vertfrag\mini.shader" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\VertStruct.cginc" />
      <None Include="Assets\SteamVR\readme.txt" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getTubeNormalIDs.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getTorusIDs.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\handForce.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\goldBug.shader" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertStruct.cginc" />

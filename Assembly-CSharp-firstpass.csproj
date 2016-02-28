@@ -65,9 +65,11 @@
      <None Include="Assets\Resources\Shaders\vertfrag\SubAudio.shader" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\HandStruct.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Blit.shader" />
+     <None Include="Assets\Resources\Shaders\vertfrag\mini.shader" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\VertStruct.cginc" />
      <None Include="Assets\SteamVR\readme.txt" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getTubeNormalIDs.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getTorusIDs.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\handForce.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\goldBug.shader" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertStruct.cginc" />

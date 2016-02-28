@@ -89,9 +89,7 @@ public class MoveByController : MonoBehaviour {
     print( "check" );
   }
 
-  void onTriggerEnter(){
-    print( "check" );
-  }
+
 
   void OnTriggerEnter(Collider Other){
 
