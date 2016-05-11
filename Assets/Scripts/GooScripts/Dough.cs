@@ -30,8 +30,8 @@ public class Dough : MonoBehaviour
     private bool activating = false;
     private float deactivationTime = 0;
 
-    private float activatingTime = 5;
-    private float deactivatingTime = 5;
+    private float activatingTime = 1;
+    private float deactivatingTime = 1;
 
     public GameObject DisformerPrefab;
 
@@ -140,7 +140,9 @@ public class Dough : MonoBehaviour
 
       _kernel = computeShader.FindKernel("CSMain");
 
-      PostRenderEvent.PostRender += Render;
+      //PostRenderEvent.PostRender += Render;
+
+      Camera.onPostRender += Render;
 
       // Hit it w/ a dispatch first time
       Dispatch();
@@ -170,6 +172,7 @@ public class Dough : MonoBehaviour
  
     //When this GameObject is disabled we must release the buffers or else Unity complains.
     private void OnDisable(){
+      Camera.onPostRender -= Render;
       ReleaseBuffer();
     }
 
@@ -213,10 +216,10 @@ public class Dough : MonoBehaviour
  
     //After all rendering is complete we dispatch the compute shader and then set the material before drawing with DrawProcedural
     //this just draws the "mesh" as a set of points
-    private void Render() {
+    private void Render(Camera camera) {
 
 
-      int numVertsTotal = ribbonWidth * 3 * 2 * (ribbonLength);
+      int numVertsTotal = (int)((float)ribbonWidth * activeVal * activeVal)  * 3 * 2 * (ribbonLength);
       
 
       // Only computes physics and does big render
@@ -231,7 +234,7 @@ public class Dough : MonoBehaviour
         material.SetBuffer("buf_Points", _vertBuffer);
         material.SetBuffer("og_Points", _ogBuffer);
 
-        material.SetInt("_Mini"   , 1);
+        material.SetInt("_Mini"   , 1 );
 
 
         material.SetInt("_RibbonWidth" , ribbonWidth);

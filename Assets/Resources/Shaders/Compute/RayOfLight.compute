@@ -13,6 +13,13 @@
  #define gridZ (threadZ * strideZ)
 
 float3 _Position;
+float3 _Prism;
+int _Attracting;
+
+float _Px;
+float _Py;
+float _Pz;
+
 
 //low level
 float _Time;
@@ -50,6 +57,23 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
   float3 transformedOG =  mul( transBuffer[0] , float4( og.pos , 1.) ).xyz;
 
   float mass = hash( (float)pID ) +1;
+
+
+   if( _Attracting == 1 ){
+
+    float3 p = float3( _Px , _Py , _Pz );
+
+    if( vert.pos.y > _Position.y ){
+
+      float3 dif = vert.pos - p;
+
+      force += normalize(dif) * -.1 * (1 / (length( dif * 100 )+.01)); //float3( 1 , 0 , 0 );//normalize(dif) * 100.3;
+
+      if( length( dif ) < .1){ vert.life = -.5; vert.vel = 0; vert.pos = 0; }
+
+    }
+  }
+
   force += float3(0,.0004,0);
 
 
@@ -67,7 +91,12 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
     //force += (_Position - vert.pos) * -.07;
   }
 
-  force += curlFaked( vert.pos * 3.0 ) * .0001;// * vert.pos.y;
+  if( vert.pos.y > _Position.y ){
+
+    force += curlFaked( vert.pos * 3.0 ) * .001 * (vert.pos.y - _Position.y);  // * vert.pos.y;
+  }
+
+  
   if( length( force ) > 4. ){ force = normalize( force ) * 4.; }
 
   vert.vel += force * 1. / mass;
@@ -81,14 +110,15 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
 
   if( vert.life < 0 ){
       
-    float raySize = 2.;
+    float raySize = .04;
     float x = _Position.x  + (( hash( (float)pID * 3))-.5) * raySize;
     float z = _Position.z  + (( hash( (float)pID * 7))-.5) * raySize;
+    float y = _Position.y;
     float3 bPos  = float3( x,0,z );
 
     vert.pos = bPos;
     vert.vel = float3( 0,0,0);
-    vert.life = 1;
+    vert.life += 1;
   }
 
   vert.life -= .001;

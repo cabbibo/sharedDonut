@@ -13,6 +13,9 @@ public class Prism : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+    // Making each rendered object have its own instance
+    GetComponent<Renderer>().material.SetInt("_WHAT",1);
 	
 	}
 	

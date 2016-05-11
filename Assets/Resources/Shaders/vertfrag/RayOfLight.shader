@@ -76,7 +76,7 @@ Shader "Custom/RayOfLight" {
 
               o.nor = normalize(v.vel);
 
-              float hexRadius = .2;
+              float hexRadius = .005;
               float3 z = normalize(v.pos);
               float3 x = normalize(cross( z , float3( 0 , 1 , 0 ) ));
               float3 y = normalize(cross( x , z ));
