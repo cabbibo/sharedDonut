@@ -106,7 +106,7 @@ Shader "Custom/RayOfLight" {
             //Pixel function returns a solid color for each point.
             float4 frag (varyings i) : COLOR {
 
-              float3 fCol = ( i.nor * .5 + .5 );
+              float3 fCol = float3( 1 , 1,1);//( i.nor * .5 + .5 );
 
               return float4( fCol , 1. );
 

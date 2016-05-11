@@ -7,7 +7,7 @@ public class GetCollisionBounds : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-    var error = EVRInitError.None;
+   /* var error = EVRInitError.None;
 
 
     var pChaperone = OpenVR.GetGenericInterface(OpenVR.IVRChaperone_Version, ref error);
@@ -43,7 +43,7 @@ public class GetCollisionBounds : MonoBehaviour {
     //print( chaperone );
     //print( chaperoneSetup );
 //    print( rect );
-
+*/
 
 
 	}

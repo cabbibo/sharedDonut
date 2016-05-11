@@ -1,4 +1,7 @@
-﻿Shader "Custom/prism" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "Custom/prism" {
  Properties {
   
 
@@ -170,7 +173,7 @@
 
         float n = noise( pos * (10. +sin( _Time.x * 20.) ) + float3( _SinTime.x , _SinTime.y , _SinTime.z ) );
 
-        res.x += n * .03;
+        res.x += n * .3;
         
         return res; 
      
@@ -224,10 +227,10 @@
         // Getting the position for actual position
         o.pos = mul( UNITY_MATRIX_MVP , v.position );
      
-        float3 mPos = mul( _Object2World , v.position );
+        float3 mPos = mul( unity_ObjectToWorld , v.position );
 
         o.ro = v.position;
-        o.camPos = mul( _World2Object , float4( _WorldSpaceCameraPos  , 1. )); 
+        o.camPos = mul( unity_WorldToObject , float4( _WorldSpaceCameraPos  , 1. )); 
 
         return o;
 
@@ -255,14 +258,16 @@
           float3 nor = calcNormal( pos );
           
           
-          nor = mul(  nor, (float3x3)_World2Object ); 
+          nor = mul(  nor, (float3x3)unity_WorldToObject ); 
           nor = normalize( nor );
           col = nor * .5 + .5;
 
-          float n = noise( pos * 10 );
-          if( n < 0.5 ){ discard; }
+          col = dot( nor ,rd );//float3( .1 , .1 , .1 );
 
-          float4 wPos = mul( _Object2World , float4( pos.x , pos.y , pos.z , 1. ) );
+          //float n = noise( pos * 10 );
+          //if( n < 0.5 ){ discard; }
+
+          float4 wPos = mul( unity_ObjectToWorld , float4( pos.x , pos.y , pos.z , 1. ) );
 
           //depth = (log(c * wPos.z + 1) / log(c * far + 1) * wPos.w);
 
@@ -279,7 +284,7 @@
           }
           
         }else{
-          col = float3( 1 ,1,1);//discard;
+          col = float3( 0,0,0);//discard;
         }
 
         fixed4 color;

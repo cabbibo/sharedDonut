@@ -80,8 +80,8 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
   //Hand Forces
   for( int i = 0; i < _NumberHands; i++ ){
     Hand  h = handBuffer[i];
-    if( length( h.pos - vert.pos ) < .5 ){
-      force += h.vel * .002;
+    if( length( h.pos - vert.pos ) < .1 ){
+      force -= normalize(h.pos - vert.pos) * .002;
     }
    //force += h.triggerVal  * _HandRepelStrength * handForce( vert.pos , h.pos , _HandRepelRadius );
   }

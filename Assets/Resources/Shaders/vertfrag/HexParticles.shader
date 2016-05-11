@@ -43,6 +43,7 @@
                 float3 worldPos : TEXCOORD1;
                 float3 nor : TEXCOORD3;
                 int id : TEXCOORD2;
+                float life : TEXCOORD4;
 
             };
 
@@ -75,6 +76,7 @@
               o.worldPos = v.pos + float3( hash( fID ) , hash( id + 2 ) , hash( id + 10 ) ) * 10.;
 
               o.nor = normalize(v.vel);
+              o.life = v.life;
 
               float hexRadius = .03;
               float3 z = normalize(v.vel);
@@ -107,6 +109,8 @@
             float4 frag (varyings i) : COLOR {
 
               float3 fCol = ( i.nor * .5 + .5 );
+
+              fCol  *= i.life;
 
               return float4( fCol , 1. );
 

@@ -21,6 +21,7 @@ public class MoveByController : MonoBehaviour {
   Collider colInside;
 
 	void OnEnable(){
+
     EventManager.OnTriggerDown += OnTriggerDown;
     EventManager.OnTriggerUp += OnTriggerUp;
     EventManager.StayTrigger += StayTrigger;
@@ -49,7 +50,10 @@ public class MoveByController : MonoBehaviour {
 	}
 
   void OnTriggerDown(GameObject o){
+
+    //print("CHEcKLS");
     if( inside == true ){
+      print("UASD");
       //transform.SetParent(o.transform);
       moving = true;
 

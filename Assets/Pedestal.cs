@@ -21,11 +21,14 @@ public class Pedestal : MonoBehaviour {
   private Vector3 v1;
 
   private RayOfLight rayOfLight;
+  private Light light;
+
 
 	// Use this for initialization
 	void Start () {
 
     rayOfLight = GetComponent<RayOfLight>();
+    light  = GetComponent<Light>();
 	
 	}
 	
@@ -95,6 +98,7 @@ public class Pedestal : MonoBehaviour {
       prismSelected = false;
       selectedPrism = null;
       attractingPrism = null;
+      light.intensity = 1;
 
     }
 
@@ -120,6 +124,7 @@ public class Pedestal : MonoBehaviour {
 
     if( selectedPrism != prism ){
       selectedPrism = prism;
+       light.intensity = .3f;
       prism.GetComponent<Prism>().select();
     }
     
@@ -128,7 +133,7 @@ public class Pedestal : MonoBehaviour {
   void OnTriggerEnter(Collider c){
 
     if( c.gameObject.tag == "Prism"){
-      print("YESSSS");
+     // print("YESSSS");
     }
 
 
