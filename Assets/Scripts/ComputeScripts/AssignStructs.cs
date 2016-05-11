@@ -226,7 +226,7 @@ public class AssignStructs : MonoBehaviour {
       transValues[i+16] = m[x,y];
     }
 
-    _transBuffer.SetData(transValues);
+     _transBuffer.SetData(transValues);
 
   }
 
@@ -254,7 +254,7 @@ public class AssignStructs : MonoBehaviour {
       }
     }
   
-    _handBuffer.SetData( handValues );
+      _handBuffer.SetData( handValues );
   }
 
 }

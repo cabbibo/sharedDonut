@@ -1,0 +1,99 @@
+#pragma kernel CSMain
+ 
+ #define threadX 4
+ #define threadY 4
+ #define threadZ 4
+
+ #define strideX 4
+ #define strideY 4
+ #define strideZ 4
+
+ #define gridX (threadX * strideX)
+ #define gridY (threadY * strideY)
+ #define gridZ (threadZ * strideZ)
+
+float3 _Position;
+
+//low level
+float _Time;
+float _Delta;
+
+int _NumberHands;
+
+#include "Chunks/VertStruct.cginc"
+#include "Chunks/PosStruct.cginc"
+#include "Chunks/HandStruct.cginc"
+
+
+#include "Chunks/noise.cginc"
+#include "Chunks/curlFaked.cginc"
+
+
+
+RWStructuredBuffer<Vert> vertBuffer;
+RWStructuredBuffer<Pos> ogBuffer;
+RWStructuredBuffer<float4x4> transBuffer;
+RWStructuredBuffer<Hand> handBuffer;
+
+Texture2D<float4> _Audio;
+
+
+[numthreads(threadX,threadY,threadZ)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+  
+  int pID = id.x + id.y * gridX + id.z * gridX * gridY;
+
+  Vert vert = vertBuffer[pID];
+  Pos og = ogBuffer[pID];
+
+  float3 force = float3( 0 , 0 , 0 );
+  float3 transformedOG =  mul( transBuffer[0] , float4( og.pos , 1.) ).xyz;
+
+  float mass = hash( (float)pID ) +1;
+  force += float3(0,.0004,0);
+
+
+  //Hand Forces
+  for( int i = 0; i < _NumberHands; i++ ){
+    Hand  h = handBuffer[i];
+    if( length( h.pos - vert.pos ) < .5 ){
+      force += h.vel * .002;
+    }
+   //force += h.triggerVal  * _HandRepelStrength * handForce( vert.pos , h.pos , _HandRepelRadius );
+  }
+
+
+  if( length( _Position - vert.pos ) < .1 ){
+    //force += (_Position - vert.pos) * -.07;
+  }
+
+  force += curlFaked( vert.pos * 3.0 ) * .0001;// * vert.pos.y;
+  if( length( force ) > 4. ){ force = normalize( force ) * 4.; }
+
+  vert.vel += force * 1. / mass;
+
+  // Limit Velocity
+  if( length( vert.vel ) > 2. ){ vert.vel = normalize( vert.vel )* 2.; }
+
+  vert.vel *= .96;
+
+  vert.pos += vert.vel ;
+
+  if( vert.life < 0 ){
+      
+    float raySize = 2.;
+    float x = _Position.x  + (( hash( (float)pID * 3))-.5) * raySize;
+    float z = _Position.z  + (( hash( (float)pID * 7))-.5) * raySize;
+    float3 bPos  = float3( x,0,z );
+
+    vert.pos = bPos;
+    vert.vel = float3( 0,0,0);
+    vert.life = 1;
+  }
+
+  vert.life -= .001;
+  
+  //vert.pos = og.pos;
+  vertBuffer[pID] = vert;
+
+}

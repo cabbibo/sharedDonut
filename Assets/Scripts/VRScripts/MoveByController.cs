@@ -57,6 +57,8 @@ public class MoveByController : MonoBehaviour {
 
       relQuat = Quaternion.Inverse(colInside.transform.rotation) * transform.rotation;
       relPos = Quaternion.Inverse(colInside.transform.rotation) * relPos;
+
+      GetComponent<Rigidbody>().isKinematic = true;
     
     }
   }
@@ -72,7 +74,8 @@ public class MoveByController : MonoBehaviour {
       }
       vel /= 3;
       print( vel );
-      GetComponent<Rigidbody>().velocity = vel * 120.0f;
+      GetComponent<Rigidbody>().velocity = vel * 200.0f;
+      GetComponent<Rigidbody>().isKinematic = false; //= vel * 120.0f;
     }
 
     

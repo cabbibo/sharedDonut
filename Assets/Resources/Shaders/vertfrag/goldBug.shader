@@ -67,6 +67,43 @@
             };
 
             #include "Chunks/getTorusIDs.cginc"
+            uint getMiniID( uint id  ){
+
+              uint base = floor( id / 6 );
+              uint tri  = id % 6;
+              base *= 16;
+              uint row = floor( base / (_RibbonWidth) ) * 16;
+              uint col = (base) % (_RibbonWidth);
+
+              uint rowU = (row + 16) % _RibbonLength;
+              uint colU = (col + 16                                                                                                                                                                                                                                                     ) % _RibbonWidth;
+
+              uint rDoID = row * _RibbonWidth;
+              uint rUpID = rowU * _RibbonWidth;
+              uint cDoID = col;
+              uint cUpID = colU;
+
+
+              uint fID = 0;
+
+              if( tri == 0 ){
+                fID = rDoID + cDoID;
+              }else if( tri == 1 ){
+                fID = rUpID + cDoID;
+              }else if( tri == 2 ){
+                fID = rUpID + cUpID;
+              }else if( tri == 3 ){
+                fID = rDoID + cDoID;
+              }else if( tri == 4 ){
+                fID = rUpID + cUpID;
+              }else if( tri == 5 ){
+                fID = rDoID + cUpID;
+              }else{
+                fID = 0;
+              }
+              return fID;
+
+            }
             //#include "Chunks/getTubeNormalIDs.cginc"
             #include "Chunks/getGridDiscard.cginc"
             #include "Chunks/semLookup.cginc"
@@ -84,7 +121,14 @@
                 varyings o;
 
                 // from getRibbonID 
-                uint fID = getID( id );
+                uint fID;
+
+                if( _Mini == 0 ){
+                  fID = getID( id );
+                }else{
+                  fID = getMiniID( id );
+                } 
+                
                 VertC4 v = buf_Points[fID];
                 Pos og = og_Points[fID];
 
@@ -94,10 +138,13 @@
 
                 if( _Mini == 1 ){
 
-                  //o.worldPos = mul( invWorldMat , float4( v.pos , 1.) ).xyz;
+                  // Center inside of smallSphere
+                  o.worldPos = mul( invWorldMat , float4( v.pos , 1.) ).xyz;
                   o.worldPos = mul( miniMat , float4( o.worldPos , 1.) ).xyz;
 
+
                 }
+
 
                 o.pos = mul (UNITY_MATRIX_VP, float4(o.worldPos,1.0f));
 

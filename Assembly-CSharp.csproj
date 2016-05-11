@@ -47,6 +47,10 @@
   <ItemGroup>
      <Compile Include="Assets\OSPNative\scenes\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
      <Compile Include="Assets\OSPNative\scripts\ONSPAudioSource.cs" />
+     <Compile Include="Assets\Pedestal.cs" />
+     <Compile Include="Assets\Prism.cs" />
+     <Compile Include="Assets\RayOfLight.cs" />
+     <Compile Include="Assets\Scripts\AudioBuffer.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\PlayOnTouch.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\audioListenerTexture.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\audioSourceTexture.cs" />
@@ -54,12 +58,19 @@
      <Compile Include="Assets\Scripts\AudioScripts\micInput2.cs" />
      <Compile Include="Assets\Scripts\AudioScripts\setAudioSourceTexture.cs" />
      <Compile Include="Assets\Scripts\ComputeScripts\AssignStructs.cs" />
+     <Compile Include="Assets\Scripts\GooScripts\DonutInfo.cs" />
+     <Compile Include="Assets\Scripts\GooScripts\Dough.cs" />
+     <Compile Include="Assets\Scripts\GooScripts\Projector.cs" />
      <Compile Include="Assets\Scripts\GooScripts\Shell.cs" />
      <Compile Include="Assets\Scripts\GooScripts\Tubes.cs" />
+     <Compile Include="Assets\Scripts\HandBuffer.cs" />
+     <Compile Include="Assets\Scripts\InterfaceScripts\DonutEater.cs" />
+     <Compile Include="Assets\Scripts\InterfaceScripts\DonutInterface.cs" />
      <Compile Include="Assets\Scripts\InterfaceScripts\Select3D.cs" />
      <Compile Include="Assets\Scripts\InterfaceScripts\SetColorFromValue.cs" />
      <Compile Include="Assets\Scripts\InterfaceScripts\Slider.cs" />
      <Compile Include="Assets\Scripts\InterfaceScripts\SlugInterface.cs" />
+     <Compile Include="Assets\Scripts\PeaceHex.cs" />
      <Compile Include="Assets\Scripts\PostRenderEvent.cs" />
      <Compile Include="Assets\Scripts\SetBodyMaterial.cs" />
      <Compile Include="Assets\Scripts\VRScripts\EventManager.cs" />
@@ -98,14 +109,24 @@
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_TestController.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_TrackedObject.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Utils.cs" />
+     <Compile Include="Assets\Tetrahedron.cs" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\uvNormalMap.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\ruby.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
+     <None Include="Assets\Resources\Shaders\Compute\RayOfLight.compute" />
      <None Include="Assets\SteamVR\Resources\SteamVR_BlitFlip.shader" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertexIn.cginc" />
+     <None Include="Assets\Resources\Shaders\Compute\Chunks\snoise.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\TubesShader.compute" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getGridDiscard.cginc" />
+     <None Include="Assets\Resources\Shaders\Compute\Chunks\curlFaked.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertexOut.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\getRibbonID.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\HexParticles.shader" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertC4Struct.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\prismTorus.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_HiddenArea.shader" />
+     <None Include="Assets\Resources\Shaders\Compute\Chunks\noise.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\ShellShader.compute" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\springForce.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
@@ -114,9 +135,13 @@
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\noise.cginc" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\PosStruct.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\semLookup.cginc" />
+     <None Include="Assets\Resources\Shaders\Compute\Chunks\curlNoise.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\SubAudio.shader" />
+     <None Include="Assets\Resources\Shaders\vertfrag\Chunks\calcNormal.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\simpleTorus.shader" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\HandStruct.cginc" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Blit.shader" />
+     <None Include="Assets\Resources\Shaders\vertfrag\RayOfLight.shader" />
      <None Include="Assets\Resources\Shaders\vertfrag\mini.shader" />
      <None Include="Assets\Resources\Shaders\Compute\Chunks\VertStruct.cginc" />
      <None Include="Assets\SteamVR\readme.txt" />
@@ -125,7 +150,9 @@
      <None Include="Assets\Resources\Shaders\Compute\Chunks\handForce.cginc" />
      <None Include="Assets\Resources\Shaders\vertfrag\goldBug.shader" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\VertStruct.cginc" />
+     <None Include="Assets\Resources\Shaders\vertfrag\prism.shader" />
      <None Include="Assets\Resources\Shaders\vertfrag\Chunks\noise 1.cginc" />
+     <None Include="Assets\Resources\Shaders\Compute\HexPeace.compute" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
