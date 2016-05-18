@@ -186,7 +186,7 @@ public class Dough : MonoBehaviour
         if( activating == true ){
           activeVal = (Time.time - activationTime)  / activatingTime;
           audio.volume = activeVal;
-          print( activeVal );
+          //print( activeVal );
 
           if( activeVal > 1 ){
             activating  = false;

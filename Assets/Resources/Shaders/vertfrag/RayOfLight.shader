@@ -42,6 +42,7 @@ Shader "Custom/RayOfLight" {
                 float4 pos      : SV_POSITION;
                 float3 worldPos : TEXCOORD1;
                 float3 nor : TEXCOORD3;
+                float life : TEXCOORD4;
                 int id : TEXCOORD2;
 
             };
@@ -76,7 +77,7 @@ Shader "Custom/RayOfLight" {
 
               o.nor = normalize(v.vel);
 
-              float hexRadius = .005;
+              float hexRadius = .005 * v.life;
               float3 z = normalize(v.pos);
               float3 x = normalize(cross( z , float3( 0 , 1 , 0 ) ));
               float3 y = normalize(cross( x , z ));
@@ -99,6 +100,7 @@ Shader "Custom/RayOfLight" {
               }
 
               o.pos = mul (UNITY_MATRIX_VP, float4(o.worldPos,1.0f));
+              o.life = v.life;
 
               return o;
             }
@@ -108,7 +110,7 @@ Shader "Custom/RayOfLight" {
 
               float3 fCol = float3( 1 , 1,1);//( i.nor * .5 + .5 );
 
-              return float4( fCol , 1. );
+              return float4( fCol , i.life );
 
 
             }

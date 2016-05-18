@@ -78,7 +78,7 @@
               o.nor = normalize(v.vel);
               o.life = v.life;
 
-              float hexRadius = .03;
+              float hexRadius = .03 * length( _PrismPosition - v.pos);
               float3 z = normalize(v.vel);
               float3 x = normalize(cross( z , float3( 0 , 1 , 0 ) ));
               float3 y = normalize(cross( x , z ));

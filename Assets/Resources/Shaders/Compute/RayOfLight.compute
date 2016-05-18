@@ -74,7 +74,7 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
     }
   }
 
-  force += float3(0,.0004,0);
+  force += float3(0,.0002,0);
 
 
   //Hand Forces
@@ -93,7 +93,7 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
 
   if( vert.pos.y > _Position.y ){
 
-    force += curlFaked( vert.pos * 3.0 ) * .001 * (vert.pos.y - _Position.y);  // * vert.pos.y;
+    force += curlFaked( vert.pos * 3.0 + float3( 0 , _Time * .1 , 0 ) ) * .001 * min( .5 , (vert.pos.y - _Position.y));  // * vert.pos.y;
   }
 
   
@@ -110,7 +110,7 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
 
   if( vert.life < 0 ){
       
-    float raySize = .04;
+    float raySize = .01;
     float x = _Position.x  + (( hash( (float)pID * 3))-.5) * raySize;
     float z = _Position.z  + (( hash( (float)pID * 7))-.5) * raySize;
     float y = _Position.y;

@@ -23,12 +23,26 @@ public class Pedestal : MonoBehaviour {
   private RayOfLight rayOfLight;
   private Light light;
 
+  public AudioClip attractClip;
+  public AudioClip startAttractClip;
+
+  private AudioSource attractSound;
+  private AudioSource startAttractSound;
 
 	// Use this for initialization
 	void Start () {
 
     rayOfLight = GetComponent<RayOfLight>();
     light  = GetComponent<Light>();
+
+    attractSound = transform.gameObject.AddComponent<AudioSource>();
+    attractSound.spatialize = true;
+    attractSound.clip = attractClip;
+    attractSound.loop = true;
+
+    startAttractSound = transform.gameObject.AddComponent<AudioSource>();
+    startAttractSound.spatialize = true;
+    startAttractSound.clip = startAttractClip;
 	
 	}
 	
@@ -112,6 +126,8 @@ public class Pedestal : MonoBehaviour {
 
     v1 = -10 * v1;
     //v1.Normalize();
+//closestLength < attractionRadius 
+    attractSound.volume = (attractionRadius - closestLength ) / attractionRadius;
 
     prism.GetComponent<Rigidbody>().AddForce( v1 );
 
